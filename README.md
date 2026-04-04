@@ -20,7 +20,7 @@
     <img src="https://img.shields.io/badge/🎮_Ver_demo_en_vivo-8b5cf6?style=for-the-badge" />
   </a>
   &nbsp;
-  <a href="https://github.com/4GeeksAcademy/fs-127-Playback-AAA" target="_blank">
+  <a href="https://github.com/alexsilvan92/Playback-Marketplace" target="_blank">
     <img src="https://img.shields.io/badge/Repositorio-24292e?style=for-the-badge&logo=github&logoColor=white" />
   </a>
   &nbsp;
@@ -212,16 +212,16 @@ npm run start       # frontend → :3000
 
 ## 📚 Documentación
 
-| | Doc | Descripción |
-|---|---|---|
-| 🚀 | [Instalación y arranque](./docs/README_SETUP.md) | Codespaces y Windows local paso a paso |
-| 🌱 | [Seed de categorías](./docs/README_SEED_CATEGORIES.md) | Categorías, subcategorías e ítems del catálogo |
-| 🧪 | [Seed de datos de prueba](./docs/README_SEED_DATA.md) | Usuarios, productos y pedidos de prueba |
-| 🌗 | [Sistema de temas](./docs/README_DARK_MODE.md) | Clases semánticas para modo claro/oscuro |
-| 📸 | [Cloudinary + UI Avatars](./docs/README_CLOUDINARY.md) | Almacenamiento de imágenes y avatares automáticos |
-| 💳 | [Stripe](./docs/README_STRIPE.md) | Pagos con Stripe, webhooks y comisiones |
-| 📧 | [Email — Brevo](./docs/README_EMAIL.md) | Emails transaccionales con Brevo API HTTP |
-| 🤖 | [IA — Groq](./docs/README_AI.md) | Asistente de búsqueda con Groq API |
+|     | Doc                                                    | Descripción                                       |
+| --- | ------------------------------------------------------ | ------------------------------------------------- |
+| 🚀  | [Instalación y arranque](./docs/README_SETUP.md)       | Codespaces y Windows local paso a paso            |
+| 🌱  | [Seed de categorías](./docs/README_SEED_CATEGORIES.md) | Categorías, subcategorías e ítems del catálogo    |
+| 🧪  | [Seed de datos de prueba](./docs/README_SEED_DATA.md)  | Usuarios, productos y pedidos de prueba           |
+| 🌗  | [Sistema de temas](./docs/README_DARK_MODE.md)         | Clases semánticas para modo claro/oscuro          |
+| 📸  | [Cloudinary + UI Avatars](./docs/README_CLOUDINARY.md) | Almacenamiento de imágenes y avatares automáticos |
+| 💳  | [Stripe](./docs/README_STRIPE.md)                      | Pagos con Stripe, webhooks y comisiones           |
+| 📧  | [Email — Brevo](./docs/README_EMAIL.md)                | Emails transaccionales con Brevo API HTTP         |
+| 🤖  | [IA — Groq](./docs/README_AI.md)                       | Asistente de búsqueda con Groq API                |
 
 ---
 

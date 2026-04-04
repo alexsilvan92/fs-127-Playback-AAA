@@ -1,108 +1,349 @@
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
-  Github, Linkedin, Globe, Instagram, ExternalLink,
-  BookOpen, Users, Gamepad2, ShoppingCart,
-  CreditCard, Image, Mail, LayoutDashboard, GraduationCap, Wrench,
-  ChevronDown, ChevronUp, FlaskConical, Bot,
-  Terminal, Braces, FileCode, Paintbrush, Database, Layers, Zap,
-  Route, KeyRound, Server, Cloud, MapPin, UserCircle, Languages, Shapes,
-} from "lucide-react";
+  Github,
+  Linkedin,
+  Globe,
+  Instagram,
+  ExternalLink,
+  BookOpen,
+  Users,
+  Gamepad2,
+  ShoppingCart,
+  CreditCard,
+  Image,
+  Mail,
+  LayoutDashboard,
+  GraduationCap,
+  Wrench,
+  ChevronDown,
+  ChevronUp,
+  FlaskConical,
+  Bot,
+  Terminal,
+  Braces,
+  FileCode,
+  Paintbrush,
+  Database,
+  Layers,
+  Zap,
+  Route,
+  KeyRound,
+  Server,
+  Cloud,
+  MapPin,
+  UserCircle,
+  Languages,
+  Shapes,
+} from 'lucide-react';
 
 // ─── Assets ──────────────────────────────────────────────────────────────────
-const LOGO_FULL_DARK  = "https://res.cloudinary.com/playback-assets/image/upload/v1772853456/logo_navbar_playback_vdark.png";
-const LOGO_FULL_LIGHT = "https://res.cloudinary.com/playback-assets/image/upload/v1772853455/logo_navbar_playback_v1.png";
+const LOGO_FULL_DARK =
+  'https://res.cloudinary.com/playback-assets/image/upload/v1772853456/logo_navbar_playback_vdark.png';
+const LOGO_FULL_LIGHT =
+  'https://res.cloudinary.com/playback-assets/image/upload/v1772853455/logo_navbar_playback_v1.png';
 
 // ─── Usuarios de prueba ───────────────────────────────────────────────────────
 const TEST_USERS = [
-  { role: "admin",  email: "admin@playback.com",  password: "Admin!",    label: "Admin" },
-  { role: "seller", email: "seller@playback.com", password: "Seller!",   label: "Vendedor" },
-  { role: "seller", email: "carlos@test.com",     password: "Test1234!", label: "Vendedor" },
-  { role: "seller", email: "maria@test.com",      password: "Test1234!", label: "Vendedor" },
-  { role: "seller", email: "alex@test.com",       password: "Test1234!", label: "Vendedor" },
-  { role: "buyer",  email: "lucia@test.com",      password: "Test1234!", label: "Comprador" },
-  { role: "buyer",  email: "pablo@test.com",      password: "Test1234!", label: "Comprador" },
-  { role: "buyer",  email: "elena@test.com",      password: "Test1234!", label: "Comprador" },
-  { role: "buyer",  email: "javier@test.com",     password: "Test1234!", label: "Comprador" },
-  { role: "buyer",  email: "ana@test.com",        password: "Test1234!", label: "Comprador" },
+  {
+    role: 'admin',
+    email: 'admin@playback.com',
+    password: 'Admin!',
+    label: 'Admin',
+  },
+  {
+    role: 'seller',
+    email: 'seller@playback.com',
+    password: 'Seller!',
+    label: 'Vendedor',
+  },
+  {
+    role: 'seller',
+    email: 'carlos@test.com',
+    password: 'Test1234!',
+    label: 'Vendedor',
+  },
+  {
+    role: 'seller',
+    email: 'maria@test.com',
+    password: 'Test1234!',
+    label: 'Vendedor',
+  },
+  {
+    role: 'seller',
+    email: 'alex@test.com',
+    password: 'Test1234!',
+    label: 'Vendedor',
+  },
+  {
+    role: 'buyer',
+    email: 'lucia@test.com',
+    password: 'Test1234!',
+    label: 'Comprador',
+  },
+  {
+    role: 'buyer',
+    email: 'pablo@test.com',
+    password: 'Test1234!',
+    label: 'Comprador',
+  },
+  {
+    role: 'buyer',
+    email: 'elena@test.com',
+    password: 'Test1234!',
+    label: 'Comprador',
+  },
+  {
+    role: 'buyer',
+    email: 'javier@test.com',
+    password: 'Test1234!',
+    label: 'Comprador',
+  },
+  {
+    role: 'buyer',
+    email: 'ana@test.com',
+    password: 'Test1234!',
+    label: 'Comprador',
+  },
 ];
 
 // ─── Tarjetas de prueba Stripe ────────────────────────────────────────────────
 const STRIPE_CARDS = [
-  { number: "4242 4242 4242 4242", resultKey: "approved", emoji: "✅" },
-  { number: "4000 0000 0000 0002", resultKey: "denied",   emoji: "❌" },
-  { number: "4000 0025 0000 3155", resultKey: "secure3d", emoji: "🔐" },
+  { number: '4242 4242 4242 4242', resultKey: 'approved', emoji: '✅' },
+  { number: '4000 0000 0000 0002', resultKey: 'denied', emoji: '❌' },
+  { number: '4000 0025 0000 3155', resultKey: 'secure3d', emoji: '🔐' },
 ];
 
 const ROLE_STYLE = {
-  admin:  "bg-red-100    dark:bg-red-900/30    text-red-600    dark:text-red-400",
-  seller: "bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400",
-  buyer:  "bg-blue-100   dark:bg-blue-900/30   text-blue-600   dark:text-blue-400",
+  admin:
+    'bg-red-100    dark:bg-red-900/30    text-red-600    dark:text-red-400',
+  seller:
+    'bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400',
+  buyer:
+    'bg-blue-100   dark:bg-blue-900/30   text-blue-600   dark:text-blue-400',
 };
 
 // ─── Data estática ────────────────────────────────────────────────────────────
 const PROJECT_LINKS = [
-  { key: "repo",      icon: Github,          href: "https://github.com/4GeeksAcademy/fs-127-Playback-AAA", color: "bg-zinc-800 dark:bg-zinc-700 text-white" },
-  { key: "dashboard", icon: LayoutDashboard, href: "https://github.com/users/alexsilvan92/projects/3",     color: "bg-violet-600 text-white" },
-  { key: "academy",   icon: GraduationCap,   href: "https://4geeks.com/es",                                 color: "bg-blue-600 text-white" },
+  {
+    key: 'repo',
+    icon: Github,
+    href: 'https://github.com/alexsilvan92/Playback-Marketplace',
+    color: 'bg-zinc-800 dark:bg-zinc-700 text-white',
+  },
+  {
+    key: 'dashboard',
+    icon: LayoutDashboard,
+    href: 'https://github.com/users/alexsilvan92/projects/3',
+    color: 'bg-violet-600 text-white',
+  },
+  {
+    key: 'academy',
+    icon: GraduationCap,
+    href: 'https://4geeks.com/es',
+    color: 'bg-blue-600 text-white',
+  },
 ];
 
 const PROFESSORS = [
-  { name: "Álvaro Martín Fernández", roleKey: "instructor",        linkedin: "https://www.linkedin.com/in/alvaro-martin-fernandez-esp/", github: "https://github.com/AlvaroMartinFernandez", avatar: "https://github.com/AlvaroMartinFernandez.png" },
-  { name: "Miguel Toyas Pernichi",   roleKey: "teachingAssistant", linkedin: "https://linkedin.com/in/migueltoyaspernichi",              github: "https://github.com/mitoperni",            avatar: "https://github.com/mitoperni.png" },
+  {
+    name: 'Álvaro Martín Fernández',
+    roleKey: 'instructor',
+    linkedin: 'https://www.linkedin.com/in/alvaro-martin-fernandez-esp/',
+    github: 'https://github.com/AlvaroMartinFernandez',
+    avatar: 'https://github.com/AlvaroMartinFernandez.png',
+  },
+  {
+    name: 'Miguel Toyas Pernichi',
+    roleKey: 'teachingAssistant',
+    linkedin: 'https://linkedin.com/in/migueltoyaspernichi',
+    github: 'https://github.com/mitoperni',
+    avatar: 'https://github.com/mitoperni.png',
+  },
 ];
 
 const STUDENTS = [
-  { name: "Arantxa Ordoyo Orozco",          linkedin: "https://www.linkedin.com/in/arantxa-ordoyo/",           github: "https://github.com/arianxa",    website: "https://mi-primer-react-pearl.vercel.app/",   avatar: "https://github.com/arianxa.png" },
-  { name: "Anghers Fernando Bello Linares", linkedin: "https://www.linkedin.com/in/angherxs-bello-3b9488376/", github: "https://github.com/angherxs",   instagram: "https://www.instagram.com/angherxsfbello/", avatar: "https://github.com/angherxs.png" },
-  { name: "Alex Silván Silván",             linkedin: "https://www.linkedin.com/in/alex-silvan/",              github: "https://github.com/alexsilvan92",                                                               avatar: "https://github.com/alexsilvan92.png" },
+  {
+    name: 'Arantxa Ordoyo Orozco',
+    linkedin: 'https://www.linkedin.com/in/arantxa-ordoyo/',
+    github: 'https://github.com/arianxa',
+    website: 'https://mi-primer-react-pearl.vercel.app/',
+    avatar: 'https://github.com/arianxa.png',
+  },
+  {
+    name: 'Anghers Fernando Bello Linares',
+    linkedin: 'https://www.linkedin.com/in/angherxs-bello-3b9488376/',
+    github: 'https://github.com/angherxs',
+    instagram: 'https://www.instagram.com/angherxsfbello/',
+    avatar: 'https://github.com/angherxs.png',
+  },
+  {
+    name: 'Alex Silván Silván',
+    linkedin: 'https://www.linkedin.com/in/alex-silvan/',
+    github: 'https://github.com/alexsilvan92',
+    avatar: 'https://github.com/alexsilvan92.png',
+  },
 ];
 
 // 8 iconos — uno por cada feature en el array de i18n
-const FEATURE_ICONS = [Gamepad2, ShoppingCart, CreditCard, Image, Mail, Globe, LayoutDashboard, Bot];
+const FEATURE_ICONS = [
+  Gamepad2,
+  ShoppingCart,
+  CreditCard,
+  Image,
+  Mail,
+  Globe,
+  LayoutDashboard,
+  Bot,
+];
 
 // ─── Stack tecnológico agrupado ───────────────────────────────────────────────
 const TECH_GROUPS = [
   {
-    label: "Frontend",
-    color: "text-cyan-500 dark:text-cyan-400",
-    border: "border-cyan-500 dark:border-cyan-400",
+    label: 'Frontend',
+    color: 'text-cyan-500 dark:text-cyan-400',
+    border: 'border-cyan-500 dark:border-cyan-400',
     items: [
-      { label: "JavaScript",   icon: Braces,      color: "bg-yellow-500/10  text-yellow-600  dark:text-yellow-400  border border-yellow-500/20" },
-      { label: "HTML5",        icon: FileCode,    color: "bg-orange-500/10  text-orange-600  dark:text-orange-400  border border-orange-500/20" },
-      { label: "Tailwind CSS", icon: Paintbrush,  color: "bg-sky-500/10     text-sky-600     dark:text-sky-400     border border-sky-500/20" },
-      { label: "React 18",     icon: Layers,      color: "bg-cyan-500/10    text-cyan-600    dark:text-cyan-400    border border-cyan-500/20" },
-      { label: "Vite",         icon: Zap,         color: "bg-purple-500/10  text-purple-600  dark:text-purple-400  border border-purple-500/20" },
-      { label: "React Router", icon: Route,       color: "bg-red-500/10     text-red-600     dark:text-red-400     border border-red-500/20" },
-      { label: "i18next",      icon: Globe,       color: "bg-green-500/10   text-green-600   dark:text-green-400   border border-green-500/20" },
-      { label: "Lucide React", icon: Shapes,      color: "bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20" },
+      {
+        label: 'JavaScript',
+        icon: Braces,
+        color:
+          'bg-yellow-500/10  text-yellow-600  dark:text-yellow-400  border border-yellow-500/20',
+      },
+      {
+        label: 'HTML5',
+        icon: FileCode,
+        color:
+          'bg-orange-500/10  text-orange-600  dark:text-orange-400  border border-orange-500/20',
+      },
+      {
+        label: 'Tailwind CSS',
+        icon: Paintbrush,
+        color:
+          'bg-sky-500/10     text-sky-600     dark:text-sky-400     border border-sky-500/20',
+      },
+      {
+        label: 'React 18',
+        icon: Layers,
+        color:
+          'bg-cyan-500/10    text-cyan-600    dark:text-cyan-400    border border-cyan-500/20',
+      },
+      {
+        label: 'Vite',
+        icon: Zap,
+        color:
+          'bg-purple-500/10  text-purple-600  dark:text-purple-400  border border-purple-500/20',
+      },
+      {
+        label: 'React Router',
+        icon: Route,
+        color:
+          'bg-red-500/10     text-red-600     dark:text-red-400     border border-red-500/20',
+      },
+      {
+        label: 'i18next',
+        icon: Globe,
+        color:
+          'bg-green-500/10   text-green-600   dark:text-green-400   border border-green-500/20',
+      },
+      {
+        label: 'Lucide React',
+        icon: Shapes,
+        color:
+          'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20',
+      },
     ],
   },
   {
-    label: "Backend",
-    color: "text-zinc-500 dark:text-zinc-400",
-    border: "border-zinc-500 dark:border-zinc-400",
+    label: 'Backend',
+    color: 'text-zinc-500 dark:text-zinc-400',
+    border: 'border-zinc-500 dark:border-zinc-400',
     items: [
-      { label: "Python 3.13",  icon: Terminal,     color: "bg-indigo-500/10  text-indigo-600  dark:text-indigo-400  border border-indigo-500/20" },
-      { label: "PostgreSQL",   icon: Database,     color: "bg-blue-500/10    text-blue-600    dark:text-blue-400    border border-blue-500/20" },
-      { label: "SQLAlchemy",   icon: Database,     color: "bg-red-500/10     text-red-600     dark:text-red-400     border border-red-500/20" },
-      { label: "Flask",        icon: FlaskConical, color: "bg-zinc-500/10    text-zinc-600    dark:text-zinc-300    border border-zinc-500/20" },
-      { label: "JWT Auth",     icon: KeyRound,     color: "bg-yellow-500/10  text-yellow-600  dark:text-yellow-400  border border-yellow-500/20" },
-      { label: "Gunicorn",     icon: Server,       color: "bg-green-500/10   text-green-600   dark:text-green-400   border border-green-500/20" },
+      {
+        label: 'Python 3.13',
+        icon: Terminal,
+        color:
+          'bg-indigo-500/10  text-indigo-600  dark:text-indigo-400  border border-indigo-500/20',
+      },
+      {
+        label: 'PostgreSQL',
+        icon: Database,
+        color:
+          'bg-blue-500/10    text-blue-600    dark:text-blue-400    border border-blue-500/20',
+      },
+      {
+        label: 'SQLAlchemy',
+        icon: Database,
+        color:
+          'bg-red-500/10     text-red-600     dark:text-red-400     border border-red-500/20',
+      },
+      {
+        label: 'Flask',
+        icon: FlaskConical,
+        color:
+          'bg-zinc-500/10    text-zinc-600    dark:text-zinc-300    border border-zinc-500/20',
+      },
+      {
+        label: 'JWT Auth',
+        icon: KeyRound,
+        color:
+          'bg-yellow-500/10  text-yellow-600  dark:text-yellow-400  border border-yellow-500/20',
+      },
+      {
+        label: 'Gunicorn',
+        icon: Server,
+        color:
+          'bg-green-500/10   text-green-600   dark:text-green-400   border border-green-500/20',
+      },
     ],
   },
   {
-    label: "Servicios",
-    color: "text-violet-500 dark:text-violet-400",
-    border: "border-violet-500 dark:border-violet-400",
+    label: 'Servicios',
+    color: 'text-violet-500 dark:text-violet-400',
+    border: 'border-violet-500 dark:border-violet-400',
     items: [
-      { label: "Stripe",          icon: CreditCard,  color: "bg-violet-500/10  text-violet-600  dark:text-violet-400  border border-violet-500/20" },
-      { label: "Cloudinary",      icon: Cloud,       color: "bg-orange-500/10  text-orange-600  dark:text-orange-400  border border-orange-500/20" },
-      { label: "Brevo API",       icon: Mail,        color: "bg-pink-500/10    text-pink-600    dark:text-pink-400    border border-pink-500/20" },
-      { label: "Groq API",        icon: Bot,         color: "bg-teal-500/10    text-teal-600    dark:text-teal-400    border border-teal-500/20" },
-      { label: "GeoAPI.es",       icon: MapPin,      color: "bg-lime-500/10    text-lime-600    dark:text-lime-400    border border-lime-500/20" },
-      { label: "UI Avatars",      icon: UserCircle,  color: "bg-fuchsia-500/10 text-fuchsia-600 dark:text-fuchsia-400 border border-fuchsia-500/20" },
-      { label: "deep-translator", icon: Languages,   color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20" },
+      {
+        label: 'Stripe',
+        icon: CreditCard,
+        color:
+          'bg-violet-500/10  text-violet-600  dark:text-violet-400  border border-violet-500/20',
+      },
+      {
+        label: 'Cloudinary',
+        icon: Cloud,
+        color:
+          'bg-orange-500/10  text-orange-600  dark:text-orange-400  border border-orange-500/20',
+      },
+      {
+        label: 'Brevo API',
+        icon: Mail,
+        color:
+          'bg-pink-500/10    text-pink-600    dark:text-pink-400    border border-pink-500/20',
+      },
+      {
+        label: 'Groq API',
+        icon: Bot,
+        color:
+          'bg-teal-500/10    text-teal-600    dark:text-teal-400    border border-teal-500/20',
+      },
+      {
+        label: 'GeoAPI.es',
+        icon: MapPin,
+        color:
+          'bg-lime-500/10    text-lime-600    dark:text-lime-400    border border-lime-500/20',
+      },
+      {
+        label: 'UI Avatars',
+        icon: UserCircle,
+        color:
+          'bg-fuchsia-500/10 text-fuchsia-600 dark:text-fuchsia-400 border border-fuchsia-500/20',
+      },
+      {
+        label: 'deep-translator',
+        icon: Languages,
+        color:
+          'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20',
+      },
     ],
   },
 ];
@@ -111,8 +352,13 @@ const TECH_GROUPS = [
 function SocialLink({ href, icon: Icon, label }) {
   if (!href) return null;
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label}
-      className="p-1.5 rounded-md text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors">
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      className="p-1.5 rounded-md text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors"
+    >
       <Icon size={14} />
     </a>
   );
@@ -121,18 +367,39 @@ function SocialLink({ href, icon: Icon, label }) {
 function StudentCard({ person, roleLabel }) {
   return (
     <div className="flex flex-col items-center text-center gap-3 p-5 rounded-2xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700/50 hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors">
-      <img src={person.avatar} alt={person.name}
+      <img
+        src={person.avatar}
+        alt={person.name}
         className="w-16 h-16 rounded-full object-cover ring-2 ring-zinc-200 dark:ring-zinc-700"
-        onError={(e) => { e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(person.name)}&background=6366f1&color=fff&size=64`; }} />
+        onError={(e) => {
+          e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(person.name)}&background=6366f1&color=fff&size=64`;
+        }}
+      />
       <div>
-        <p className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm leading-tight">{person.name}</p>
-        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">{roleLabel}</p>
+        <p className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm leading-tight">
+          {person.name}
+        </p>
+        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+          {roleLabel}
+        </p>
       </div>
       <div className="flex items-center gap-0.5">
-        {person.github    && <SocialLink href={person.github}    icon={Github}    label="GitHub" />}
-        {person.linkedin  && <SocialLink href={person.linkedin}  icon={Linkedin}  label="LinkedIn" />}
-        {person.website   && <SocialLink href={person.website}   icon={Globe}     label="Portfolio" />}
-        {person.instagram && <SocialLink href={person.instagram} icon={Instagram} label="Instagram" />}
+        {person.github && (
+          <SocialLink href={person.github} icon={Github} label="GitHub" />
+        )}
+        {person.linkedin && (
+          <SocialLink href={person.linkedin} icon={Linkedin} label="LinkedIn" />
+        )}
+        {person.website && (
+          <SocialLink href={person.website} icon={Globe} label="Portfolio" />
+        )}
+        {person.instagram && (
+          <SocialLink
+            href={person.instagram}
+            icon={Instagram}
+            label="Instagram"
+          />
+        )}
       </div>
     </div>
   );
@@ -150,10 +417,11 @@ function CollapsiblePanel({ label, icon: Icon = FlaskConical, children }) {
           <Icon size={13} className="text-zinc-400" />
           {label}
         </span>
-        {open
-          ? <ChevronUp size={14} className="text-zinc-400 shrink-0" />
-          : <ChevronDown size={14} className="text-zinc-400 shrink-0" />
-        }
+        {open ? (
+          <ChevronUp size={14} className="text-zinc-400 shrink-0" />
+        ) : (
+          <ChevronDown size={14} className="text-zinc-400 shrink-0" />
+        )}
       </button>
       {open && <div className="overflow-x-auto">{children}</div>}
     </div>
@@ -162,25 +430,40 @@ function CollapsiblePanel({ label, icon: Icon = FlaskConical, children }) {
 
 function TestUsersPanel({ t }) {
   return (
-    <CollapsiblePanel label={t("about.testUsers.label")}>
+    <CollapsiblePanel label={t('about.testUsers.label')}>
       <table className="w-full text-xs">
         <thead>
           <tr className="bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400">
-            <th className="text-left px-4 py-2 font-medium">{t("about.testUsers.col.role")}</th>
-            <th className="text-left px-4 py-2 font-medium">{t("about.testUsers.col.email")}</th>
-            <th className="text-left px-4 py-2 font-medium">{t("about.testUsers.col.password")}</th>
+            <th className="text-left px-4 py-2 font-medium">
+              {t('about.testUsers.col.role')}
+            </th>
+            <th className="text-left px-4 py-2 font-medium">
+              {t('about.testUsers.col.email')}
+            </th>
+            <th className="text-left px-4 py-2 font-medium">
+              {t('about.testUsers.col.password')}
+            </th>
           </tr>
         </thead>
         <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
           {TEST_USERS.map((u) => (
-            <tr key={u.email} className="bg-white dark:bg-zinc-900/40 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors">
+            <tr
+              key={u.email}
+              className="bg-white dark:bg-zinc-900/40 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors"
+            >
               <td className="px-4 py-2">
-                <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold ${ROLE_STYLE[u.role]}`}>
+                <span
+                  className={`px-1.5 py-0.5 rounded text-[10px] font-semibold ${ROLE_STYLE[u.role]}`}
+                >
                   {u.label}
                 </span>
               </td>
-              <td className="px-4 py-2 font-mono text-zinc-600 dark:text-zinc-300">{u.email}</td>
-              <td className="px-4 py-2 font-mono text-zinc-600 dark:text-zinc-300">{u.password}</td>
+              <td className="px-4 py-2 font-mono text-zinc-600 dark:text-zinc-300">
+                {u.email}
+              </td>
+              <td className="px-4 py-2 font-mono text-zinc-600 dark:text-zinc-300">
+                {u.password}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -191,18 +474,27 @@ function TestUsersPanel({ t }) {
 
 function StripeCardsPanel({ t }) {
   return (
-    <CollapsiblePanel label={t("about.stripeCards.label")} icon={CreditCard}>
+    <CollapsiblePanel label={t('about.stripeCards.label')} icon={CreditCard}>
       <table className="w-full text-xs">
         <thead>
           <tr className="bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400">
-            <th className="text-left px-4 py-2 font-medium">{t("about.stripeCards.col.number")}</th>
-            <th className="text-left px-4 py-2 font-medium">{t("about.stripeCards.col.result")}</th>
+            <th className="text-left px-4 py-2 font-medium">
+              {t('about.stripeCards.col.number')}
+            </th>
+            <th className="text-left px-4 py-2 font-medium">
+              {t('about.stripeCards.col.result')}
+            </th>
           </tr>
         </thead>
         <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
           {STRIPE_CARDS.map((c) => (
-            <tr key={c.number} className="bg-white dark:bg-zinc-900/40 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors">
-              <td className="px-4 py-2 font-mono text-zinc-600 dark:text-zinc-300">{c.number}</td>
+            <tr
+              key={c.number}
+              className="bg-white dark:bg-zinc-900/40 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors"
+            >
+              <td className="px-4 py-2 font-mono text-zinc-600 dark:text-zinc-300">
+                {c.number}
+              </td>
               <td className="px-4 py-2 text-zinc-600 dark:text-zinc-300">
                 {c.emoji} {t(`about.stripeCards.${c.resultKey}`)}
               </td>
@@ -211,7 +503,7 @@ function StripeCardsPanel({ t }) {
         </tbody>
       </table>
       <p className="px-4 py-2.5 text-[10px] text-zinc-400 dark:text-zinc-500 bg-zinc-50 dark:bg-zinc-800/50 border-t border-zinc-100 dark:border-zinc-800">
-        {t("about.stripeCards.hint")}
+        {t('about.stripeCards.hint')}
       </p>
     </CollapsiblePanel>
   );
@@ -220,26 +512,41 @@ function StripeCardsPanel({ t }) {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export const About = () => {
   const { t } = useTranslation();
-  const features = t("about.features.items", { returnObjects: true });
+  const features = t('about.features.items', { returnObjects: true });
 
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
-
       {/* ── Hero ── */}
       <section className="relative overflow-hidden border-b border-zinc-100 dark:border-zinc-800">
-        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 [background:radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(139,92,246,0.12),transparent)]" />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -z-10 [background:radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(139,92,246,0.12),transparent)]"
+        />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 text-center">
-          <img src={LOGO_FULL_DARK}  alt="Playback" className="hidden dark:block mx-auto h-12 sm:h-14 object-contain mb-6" />
-          <img src={LOGO_FULL_LIGHT} alt="Playback" className="dark:hidden mx-auto h-12 sm:h-14 object-contain mb-6" />
+          <img
+            src={LOGO_FULL_DARK}
+            alt="Playback"
+            className="hidden dark:block mx-auto h-12 sm:h-14 object-contain mb-6"
+          />
+          <img
+            src={LOGO_FULL_LIGHT}
+            alt="Playback"
+            className="dark:hidden mx-auto h-12 sm:h-14 object-contain mb-6"
+          />
           <p className="text-lg sm:text-xl text-zinc-500 dark:text-zinc-400 max-w-xl mx-auto leading-relaxed">
-            {t("about.hero.subtitle")}
+            {t('about.hero.subtitle')}
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             {PROJECT_LINKS.map((link) => {
               const Icon = link.icon;
               return (
-                <a key={link.key} href={link.href} target="_blank" rel="noopener noreferrer"
-                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-opacity hover:opacity-80 ${link.color}`}>
+                <a
+                  key={link.key}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-opacity hover:opacity-80 ${link.color}`}
+                >
                   <Icon size={15} />
                   {t(`about.hero.links.${link.key}`)}
                 </a>
@@ -250,8 +557,13 @@ export const About = () => {
           {/* Stack tecnológico agrupado */}
           <div className="mt-10 pb-10 grid gap-6">
             {TECH_GROUPS.map((group) => (
-              <div key={group.label} className={`border rounded-xl py-3 px-3 ${group.border}`}>
-                <p className={`text-[10px] font-bold uppercase tracking-widest mb-3 ${group.color}`}>
+              <div
+                key={group.label}
+                className={`border rounded-xl py-3 px-3 ${group.border}`}
+              >
+                <p
+                  className={`text-[10px] font-bold uppercase tracking-widest mb-3 ${group.color}`}
+                >
                   {group.label}
                 </p>
                 <div className="flex flex-wrap gap-2 items-center justify-center">
@@ -275,7 +587,9 @@ export const About = () => {
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="flex items-center gap-2 mb-8">
           <BookOpen size={18} className="text-violet-500" />
-          <h2 className="text-xl font-bold tracking-tight">{t("about.features.title")}</h2>
+          <h2 className="text-xl font-bold tracking-tight">
+            {t('about.features.title')}
+          </h2>
         </div>
 
         {/* Grid de features */}
@@ -283,13 +597,23 @@ export const About = () => {
           {features.map((f, i) => {
             const Icon = FEATURE_ICONS[i] ?? Wrench;
             return (
-              <div key={i} className="flex gap-4 p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-100 dark:border-zinc-800">
+              <div
+                key={i}
+                className="flex gap-4 p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-100 dark:border-zinc-800"
+              >
                 <div className="shrink-0 mt-0.5 w-8 h-8 rounded-lg bg-violet-100 dark:bg-violet-900/40 flex items-center justify-center">
-                  <Icon size={16} className="text-violet-600 dark:text-violet-400" />
+                  <Icon
+                    size={16}
+                    className="text-violet-600 dark:text-violet-400"
+                  />
                 </div>
                 <div>
-                  <p className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">{f.title}</p>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5 leading-relaxed">{f.desc}</p>
+                  <p className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+                    {f.title}
+                  </p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5 leading-relaxed">
+                    {f.desc}
+                  </p>
                 </div>
               </div>
             );
@@ -308,11 +632,17 @@ export const About = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="flex items-center gap-2 mb-6">
             <Users size={18} className="text-violet-500" />
-            <h2 className="text-xl font-bold tracking-tight">{t("about.team.devTitle")}</h2>
+            <h2 className="text-xl font-bold tracking-tight">
+              {t('about.team.devTitle')}
+            </h2>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {STUDENTS.map((s) => (
-              <StudentCard key={s.name} person={s} roleLabel={t("about.team.devRole")} />
+              <StudentCard
+                key={s.name}
+                person={s}
+                roleLabel={t('about.team.devRole')}
+              />
             ))}
           </div>
         </div>
@@ -321,7 +651,6 @@ export const About = () => {
       {/* ── 4Geeks Academy ── */}
       <section className="border-t border-zinc-100 dark:border-zinc-800">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-
           {/* Logo + descripción */}
           <div className="flex flex-col items-center text-center mb-12">
             <a
@@ -338,10 +667,10 @@ export const About = () => {
               />
             </a>
             <p className="text-base font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
-              {t("about.academy.title")}
+              {t('about.academy.title')}
             </p>
             <p className="text-sm text-zinc-500 dark:text-zinc-400 max-w-lg leading-relaxed">
-              {t("about.academy.desc")}
+              {t('about.academy.desc')}
             </p>
             <a
               href="https://4geeks.com/es"
@@ -350,40 +679,59 @@ export const About = () => {
               className="mt-4 inline-flex items-center gap-1.5 text-xs text-blue-600 dark:text-blue-400 hover:underline"
             >
               <ExternalLink size={11} />
-              {t("about.academy.visit")}
+              {t('about.academy.visit')}
             </a>
           </div>
 
           {/* Profesores */}
           <div>
             <p className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-4 text-center">
-              {t("about.team.profCredit")}
+              {t('about.team.profCredit')}
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               {PROFESSORS.map((p) => (
-                <div key={p.name} className="flex flex-col items-center text-center gap-3 p-5 rounded-2xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700/50 hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors w-44">
+                <div
+                  key={p.name}
+                  className="flex flex-col items-center text-center gap-3 p-5 rounded-2xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700/50 hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors w-44"
+                >
                   <img
                     src={p.avatar}
                     alt={p.name}
                     className="w-12 h-12 rounded-full object-cover ring-2 ring-zinc-200 dark:ring-zinc-700"
-                    onError={(e) => { e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=a1a1aa&color=fff&size=48`; }}
+                    onError={(e) => {
+                      e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=a1a1aa&color=fff&size=48`;
+                    }}
                   />
                   <div>
-                    <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 leading-tight">{p.name}</p>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">{t(`about.team.${p.roleKey}`)}</p>
+                    <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 leading-tight">
+                      {p.name}
+                    </p>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                      {t(`about.team.${p.roleKey}`)}
+                    </p>
                   </div>
                   <div className="flex items-center gap-0.5">
-                    {p.github   && <SocialLink href={p.github}   icon={Github}   label="GitHub" />}
-                    {p.linkedin && <SocialLink href={p.linkedin} icon={Linkedin} label="LinkedIn" />}
+                    {p.github && (
+                      <SocialLink
+                        href={p.github}
+                        icon={Github}
+                        label="GitHub"
+                      />
+                    )}
+                    {p.linkedin && (
+                      <SocialLink
+                        href={p.linkedin}
+                        icon={Linkedin}
+                        label="LinkedIn"
+                      />
+                    )}
                   </div>
                 </div>
               ))}
             </div>
           </div>
-
         </div>
       </section>
-
     </div>
   );
 };
